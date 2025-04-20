@@ -9,6 +9,7 @@ import Dashboard from "@/pages/Dashboard";
 import Clients from "@/pages/Clients";
 import WorkoutBuilder from "@/pages/WorkoutBuilder";
 import Progress from "@/pages/Progress";
+import CalendarPage from "@/pages/Calendar";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
             <Route path="/clients" element={<Clients />} />
             <Route path="/workouts" element={<WorkoutBuilder />} />
             <Route path="/progress" element={<Progress />} />
+            <Route path="/calendar" element={<CalendarPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </MainLayout>
