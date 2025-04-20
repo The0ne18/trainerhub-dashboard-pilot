@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
-import { Users, Dumbbell, CalendarDays, BarChart, Plus } from 'lucide-react';
+import { Users, Dumbbell, CalendarDays, BarChart, Plus, Bell } from 'lucide-react';
 
 const Dashboard = () => {
   // Demo data - would come from API in real app
