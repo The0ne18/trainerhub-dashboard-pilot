@@ -1,18 +1,10 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Search, 
-  Plus, 
-  Edit, 
-  Trash, 
-  Calendar,
-  Dumbbell,
-  Users
-} from 'lucide-react';
+import { Search, Edit, Trash, Calendar, Dumbbell, Users } from 'lucide-react';
+import { AddClientDialog } from '@/components/clients/AddClientDialog';
 
 const clientsData = [
   { 
@@ -72,11 +64,9 @@ const Clients = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   
   const filteredClients = clientsData.filter(client => {
-    // Apply search filter
     const matchesSearch = client.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
                            client.email.toLowerCase().includes(searchTerm.toLowerCase());
     
-    // Apply tag filter
     const matchesTag = activeFilter === 'all' || client.tag === activeFilter;
     
     return matchesSearch && matchesTag;
@@ -89,13 +79,9 @@ const Clients = () => {
           <h1 className="text-3xl font-bold">Clients</h1>
           <p className="text-muted-foreground mt-1">Manage your client list and details</p>
         </div>
-        <Button className="bg-trainer-purple hover:bg-trainer-dark-purple">
-          <Plus className="mr-2 h-4 w-4" />
-          Add New Client
-        </Button>
+        <AddClientDialog />
       </div>
       
-      {/* Search and filter */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -131,7 +117,6 @@ const Clients = () => {
         </div>
       </div>
       
-      {/* Clients list */}
       <div className="grid grid-cols-1 gap-4">
         {filteredClients.map(client => (
           <Card key={client.id} className="card-shadow overflow-hidden">
