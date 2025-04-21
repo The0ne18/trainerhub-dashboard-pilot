@@ -289,7 +289,7 @@ export function ScheduleSessionDialog() {
 
             {/* Repeat options - only shown if repeat is checked */}
             {repeat && (
-              <div className="space-y-4 rounded-lg border border-muted p-3 bg-purple-50">
+              <div className="space-y-4 rounded-lg border border-muted p-3 bg-purple-50 overflow-visible">
                 <div>
                   <span className="block font-medium text-sm mb-2">Repeat on:</span>
                   <div className="flex justify-between flex-wrap gap-2">
@@ -321,7 +321,7 @@ export function ScheduleSessionDialog() {
                     min: { value: 1, message: "At least 1 week" },
                   }}
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="max-w-xs w-full">
                       <FormLabel>Repeat for (weeks)</FormLabel>
                       <FormControl>
                         <Input
@@ -329,6 +329,7 @@ export function ScheduleSessionDialog() {
                           min={1}
                           placeholder="4"
                           {...field}
+                          className="w-full"
                         />
                       </FormControl>
                       <FormMessage />
