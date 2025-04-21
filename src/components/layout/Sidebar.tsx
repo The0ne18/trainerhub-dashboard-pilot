@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { 
@@ -18,15 +18,15 @@ type NavItem = {
   label: string;
   icon: React.ElementType;
   href: string;
-  active?: boolean;
 };
 
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   
   const navItems: NavItem[] = [
-    { label: 'Dashboard', icon: LayoutDashboard, href: '/', active: true },
+    { label: 'Dashboard', icon: LayoutDashboard, href: '/' },
     { label: 'Clients', icon: Users, href: '/clients' },
     { label: 'Workouts', icon: Dumbbell, href: '/workouts' },
     { label: 'Progress', icon: ChartLine, href: '/progress' },
@@ -35,6 +35,15 @@ const Sidebar = () => {
   
   const handleNavigation = (href: string) => {
     navigate(href);
+  };
+
+  // Helper to check if the item's href matches the current path
+  const isActive = (href: string) => {
+    // Root path match or sub-paths match
+    if (href === '/') {
+      return location.pathname === '/';
+    }
+    return location.pathname.startsWith(href);
   };
   
   return (
@@ -70,11 +79,11 @@ const Sidebar = () => {
           {navItems.map((item) => (
             <li key={item.label}>
               <Button
-                variant={item.active ? "default" : "ghost"}
+                variant={isActive(item.href) ? "default" : "ghost"}
                 className={cn(
                   "w-full justify-start",
                   collapsed ? "px-2" : "px-3",
-                  item.active && "bg-trainer-purple hover:bg-trainer-dark-purple"
+                  isActive(item.href) && "bg-trainer-purple hover:bg-trainer-dark-purple"
                 )}
                 onClick={() => handleNavigation(item.href)}
               >
