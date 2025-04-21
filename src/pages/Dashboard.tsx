@@ -1,9 +1,9 @@
-
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Users, Dumbbell, CalendarDays, BarChart, Plus, Bell } from 'lucide-react';
+import { ScheduleSessionDialog } from "@/components/sessions/ScheduleSessionDialog";
 
 const Dashboard = () => {
   // Demo data - would come from API in real app
@@ -30,10 +30,7 @@ const Dashboard = () => {
           <p className="text-muted-foreground mt-1">Here's what's happening with your clients today.</p>
         </div>
         <div className="mt-4 md:mt-0 flex space-x-2">
-          <Button>
-            <CalendarDays className="mr-2 h-4 w-4" />
-            Schedule Session
-          </Button>
+          <ScheduleSessionDialog />
           <Button variant="outline">
             <Plus className="mr-2 h-4 w-4" />
             New Client
