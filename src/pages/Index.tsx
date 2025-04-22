@@ -1,11 +1,8 @@
 
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import Dashboard from './Dashboard';
+import { Navigate } from 'react-router-dom';
 
 const Index = () => {
-  // The Index page now renders the Dashboard component
-  return <Dashboard />;
+  return <Navigate to="/dashboard" replace />;
 };
 
 export default Index;
