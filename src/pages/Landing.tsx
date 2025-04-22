@@ -1,7 +1,6 @@
-
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Dumbbell, Users, Calendar, ChartLine, CheckCircle, Shield, Gift, Star } from 'lucide-react';
+import { ArrowRight, Dumbbell, Users, Calendar, ChartLine, CheckCircle, Shield, Gift, Star, Play, MessageCircle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const Landing = () => {
@@ -41,6 +40,31 @@ const Landing = () => {
               <Button size="lg" variant="outline" className="w-full sm:w-auto">
                 Watch Demo
               </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Video Showcase Section */}
+      <section className="py-20 bg-gradient-to-b from-white to-purple-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">See TrainerHub in Action</h2>
+            <div className="relative aspect-video rounded-xl overflow-hidden shadow-2xl group cursor-pointer hover:shadow-xl transition-shadow">
+              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors" />
+              <img
+                src="https://images.unsplash.com/photo-1542766788-a2f588f447ee"
+                alt="Video thumbnail"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Button 
+                  size="lg" 
+                  className="bg-white text-trainer-purple hover:bg-white/90 rounded-full w-16 h-16 p-0"
+                >
+                  <Play className="h-8 w-8 ml-1" />
+                </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -117,6 +141,83 @@ const Landing = () => {
                 <p className="text-muted-foreground">Provide a premium experience with professional features.</p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Enhanced Reviews Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">What Our Users Say</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <Card className="group hover:shadow-lg transition-all duration-300 border-none bg-gradient-to-br from-purple-50 to-white">
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <Star className="h-5 w-5 fill-trainer-purple text-trainer-purple" />
+                  <Star className="h-5 w-5 fill-trainer-purple text-trainer-purple" />
+                  <Star className="h-5 w-5 fill-trainer-purple text-trainer-purple" />
+                  <Star className="h-5 w-5 fill-trainer-purple text-trainer-purple" />
+                  <Star className="h-5 w-5 fill-trainer-purple text-trainer-purple" />
+                </div>
+                <MessageCircle className="h-8 w-8 text-trainer-purple mb-4" />
+                <p className="text-lg mb-4">"TrainerHub transformed how I manage my fitness business. The scheduling and progress tracking features are game-changers!"</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-trainer-purple/10 flex items-center justify-center">
+                    <span className="text-trainer-purple font-semibold">SJ</span>
+                  </div>
+                  <div>
+                    <p className="font-semibold">Sarah Johnson</p>
+                    <p className="text-sm text-muted-foreground">Personal Trainer, NYC</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="group hover:shadow-lg transition-all duration-300 border-none bg-gradient-to-br from-purple-50 to-white">
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <Star className="h-5 w-5 fill-trainer-purple text-trainer-purple" />
+                  <Star className="h-5 w-5 fill-trainer-purple text-trainer-purple" />
+                  <Star className="h-5 w-5 fill-trainer-purple text-trainer-purple" />
+                  <Star className="h-5 w-5 fill-trainer-purple text-trainer-purple" />
+                  <Star className="h-5 w-5 fill-trainer-purple text-trainer-purple" />
+                </div>
+                <MessageCircle className="h-8 w-8 text-trainer-purple mb-4" />
+                <p className="text-lg mb-4">"The workout builder is intuitive and saves me hours of planning time. My clients love the progress tracking!"</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-trainer-purple/10 flex items-center justify-center">
+                    <span className="text-trainer-purple font-semibold">MR</span>
+                  </div>
+                  <div>
+                    <p className="font-semibold">Mike Rodriguez</p>
+                    <p className="text-sm text-muted-foreground">Fitness Coach, LA</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="group hover:shadow-lg transition-all duration-300 border-none bg-gradient-to-br from-purple-50 to-white">
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <Star className="h-5 w-5 fill-trainer-purple text-trainer-purple" />
+                  <Star className="h-5 w-5 fill-trainer-purple text-trainer-purple" />
+                  <Star className="h-5 w-5 fill-trainer-purple text-trainer-purple" />
+                  <Star className="h-5 w-5 fill-trainer-purple text-trainer-purple" />
+                  <Star className="h-5 w-5 fill-trainer-purple text-trainer-purple" />
+                </div>
+                <MessageCircle className="h-8 w-8 text-trainer-purple mb-4" />
+                <p className="text-lg mb-4">"Since using TrainerHub, I've doubled my client base. The automated scheduling is a massive time-saver!"</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-trainer-purple/10 flex items-center justify-center">
+                    <span className="text-trainer-purple font-semibold">EW</span>
+                  </div>
+                  <div>
+                    <p className="font-semibold">Emma Wilson</p>
+                    <p className="text-sm text-muted-foreground">Health Coach, Chicago</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
