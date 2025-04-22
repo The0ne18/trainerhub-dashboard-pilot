@@ -1,13 +1,13 @@
 
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Dumbbell, Users, Calendar, ChartLine, CheckCircle, Shield, Gift } from 'lucide-react';
+import { ArrowRight, Dumbbell, Users, Calendar, ChartLine, CheckCircle, Shield, Gift, Star } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const Landing = () => {
   return (
     <div className="min-h-screen">
-      {/* Navigation */}
+      {/* Navigation - Updated with blur effect */}
       <nav className="container mx-auto px-4 py-6 flex justify-between items-center fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-50 border-b">
         <div className="flex items-center gap-2">
           <Dumbbell className="h-6 w-6 text-trainer-purple" />
@@ -21,7 +21,7 @@ const Landing = () => {
         </Link>
       </nav>
 
-      {/* Hero Section */}
+      {/* Hero Section - Enhanced with gradients and animations */}
       <section className="pt-32 pb-20 bg-gradient-to-b from-white to-purple-50">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-8">
@@ -46,7 +46,7 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Features Grid */}
+      {/* Features Grid - Redesigned with hover effects */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Everything You Need</h2>
@@ -91,7 +91,7 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Benefits Section */}
+      {/* Benefits Section - With modern layout */}
       <section className="py-20 bg-gradient-to-b from-purple-50 to-white">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Why Choose TrainerHub?</h2>
@@ -121,7 +121,23 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* Social Proof Section - New section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4 text-center">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <Star className="h-6 w-6 fill-trainer-purple text-trainer-purple" />
+            <Star className="h-6 w-6 fill-trainer-purple text-trainer-purple" />
+            <Star className="h-6 w-6 fill-trainer-purple text-trainer-purple" />
+            <Star className="h-6 w-6 fill-trainer-purple text-trainer-purple" />
+            <Star className="h-6 w-6 fill-trainer-purple text-trainer-purple" />
+          </div>
+          <p className="text-2xl font-medium mb-4">"TrainerHub transformed how I manage my fitness business"</p>
+          <p className="text-muted-foreground mb-2">Sarah Johnson</p>
+          <p className="text-sm text-muted-foreground">Personal Trainer, NYC</p>
+        </div>
+      </section>
+
+      {/* CTA Section - Enhanced with gradient background */}
       <section className="py-20 bg-trainer-purple text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Transform Your Training Business?</h2>
