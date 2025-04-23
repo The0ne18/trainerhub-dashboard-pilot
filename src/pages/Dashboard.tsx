@@ -3,15 +3,14 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
-import { Users, Dumbbell, CalendarDays, BarChart, Plus } from 'lucide-react';
+import { Users, CalendarDays, BarChart, Plus } from 'lucide-react';
 import { ScheduleSessionDialog } from "@/components/sessions/ScheduleSessionDialog";
 
 const Dashboard = () => {
   // Demo data - would come from API in real app
   const stats = [
     { label: 'Active Clients', value: '24', icon: Users, color: 'bg-blue-500', trend: '+3 this month' },
-    { label: 'Upcoming Sessions', value: '12', icon: CalendarDays, color: 'bg-green-500', trend: 'Today: 4' },
-    { label: 'Workout Templates', value: '18', icon: Dumbbell, color: 'bg-purple-500', trend: 'Last added: 2d ago' }
+    { label: 'Upcoming Sessions', value: '12', icon: CalendarDays, color: 'bg-green-500', trend: 'Today: 4' }
   ];
   
   const topClients = [
