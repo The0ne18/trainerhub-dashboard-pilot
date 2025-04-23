@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -14,9 +13,8 @@ import { Badge } from '@/components/ui/badge';
 import { toast } from '@/components/ui/sonner';
 import { format } from 'date-fns';
 import { User, Search, CalendarIcon, Check, CheckCircle, Loader } from 'lucide-react';
-import { useMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-mobile';
 
-// Mock client data - in a real application, this would come from an API
 const mockClients = [
   { id: 'c1', name: 'Alex Johnson', email: 'alex@example.com', status: 'active', avatar: null, lastActive: '2 hours ago', program: 'Weight Loss' },
   { id: 'c2', name: 'Morgan Smith', email: 'morgan@example.com', status: 'active', avatar: null, lastActive: '5 min ago', program: 'Strength' },
@@ -32,7 +30,7 @@ interface AssignWorkoutDialogProps {
 }
 
 export const AssignWorkoutDialog = ({ workoutName, exercises, difficulty }: AssignWorkoutDialogProps) => {
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [selectedClients, setSelectedClients] = useState<string[]>([]);
@@ -40,14 +38,12 @@ export const AssignWorkoutDialog = ({ workoutName, exercises, difficulty }: Assi
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  // Filter clients based on search query
   const filteredClients = mockClients.filter(client => 
     client.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
     client.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
     client.program.toLowerCase().includes(searchQuery.toLowerCase())
   );
-  
-  // Toggle client selection
+
   const toggleClientSelection = (clientId: string) => {
     setSelectedClients(prev => 
       prev.includes(clientId) 
@@ -56,7 +52,6 @@ export const AssignWorkoutDialog = ({ workoutName, exercises, difficulty }: Assi
     );
   };
 
-  // Handle workout assignment
   const handleAssignWorkout = async () => {
     if (selectedClients.length === 0) {
       toast.error('Please select at least one client');
@@ -71,8 +66,7 @@ export const AssignWorkoutDialog = ({ workoutName, exercises, difficulty }: Assi
     setIsSubmitting(true);
 
     try {
-      // In a real app, this would be an API call to save the assignment
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
       const clientNames = selectedClients.map(id => 
         mockClients.find(client => client.id === id)?.name
@@ -89,7 +83,6 @@ export const AssignWorkoutDialog = ({ workoutName, exercises, difficulty }: Assi
     }
   };
 
-  // Render content for both Dialog and Drawer
   const renderContent = () => (
     <div className="flex flex-col">
       <div className="mb-6">
@@ -222,7 +215,6 @@ export const AssignWorkoutDialog = ({ workoutName, exercises, difficulty }: Assi
     </div>
   );
 
-  // Use Dialog on desktop and Drawer on mobile
   return isMobile ? (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger asChild>
