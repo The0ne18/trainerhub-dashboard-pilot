@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Search, Plus, Dumbbell, Save, ChevronRight, User } from 'lucide-react';
+import { Search, Plus, Dumbbell, Save, ChevronRight, User, FileText, BookOpen } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const exerciseCategories = ['All', 'Strength', 'Cardio', 'Flexibility', 'Balance', 'Core'];
@@ -18,6 +18,31 @@ const exerciseLibrary = [
   { id: 6, name: 'Downward Dog', category: 'Flexibility', bodyPart: 'Full Body', difficulty: 'Easy' },
   { id: 7, name: 'Bicycle Crunch', category: 'Core', bodyPart: 'Core', difficulty: 'Medium' },
   { id: 8, name: 'Standing Balance', category: 'Balance', bodyPart: 'Legs', difficulty: 'Easy' }
+];
+
+// Dummy saved templates; later this can be hooked up to backend
+const savedTemplates = [
+  {
+    id: 't1',
+    name: 'Full Body Blast',
+    type: 'Strength',
+    exercises: 6,
+    difficulty: 'Medium'
+  },
+  {
+    id: 't2',
+    name: 'Quick HIIT Cardio',
+    type: 'Cardio',
+    exercises: 4,
+    difficulty: 'Hard'
+  },
+  {
+    id: 't3',
+    name: 'Mobility Flow',
+    type: 'Flexibility',
+    exercises: 5,
+    difficulty: 'Easy'
+  }
 ];
 
 const WorkoutBuilder = () => {
@@ -40,7 +65,7 @@ const WorkoutBuilder = () => {
         </div>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Exercise Library */}
         <Card className="card-shadow">
           <CardHeader className="pb-2">
@@ -83,9 +108,43 @@ const WorkoutBuilder = () => {
             </div>
           </CardContent>
         </Card>
-        
+
+        {/* Saved Templates */}
+        <Card className="card-shadow hidden lg:block col-span-1 h-fit max-h-[650px] overflow-y-auto">
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <BookOpen className="h-5 w-5 text-trainer-purple" />
+              Saved Templates
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {savedTemplates.length === 0 ? (
+              <div className="text-muted-foreground italic text-sm">No templates saved yet.</div>
+            ) : (
+              savedTemplates.map(template => (
+                <div key={template.id} className="p-4 rounded-md border flex items-center gap-3 justify-between hover:bg-secondary transition cursor-pointer">
+                  <div>
+                    <div className="flex items-center gap-1">
+                      <FileText className="h-4 w-4 text-muted-foreground mr-1" />
+                      <span className="font-medium">{template.name}</span>
+                    </div>
+                    <div className="flex gap-2 mt-0.5">
+                      <Badge variant="outline" className="text-xs">{template.type}</Badge>
+                      <span className="text-xs text-muted-foreground">{template.exercises} Exercises</span>
+                      <Badge variant="outline" className="text-xs">{template.difficulty}</Badge>
+                    </div>
+                  </div>
+                  <Button size="sm" variant="outline">
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))
+            )}
+          </CardContent>
+        </Card>
+
         {/* Workout Builder */}
-        <Card className="card-shadow lg:col-span-2">
+        <Card className="card-shadow lg:col-span-2 col-span-1">
           <CardHeader className="pb-2">
             <CardTitle className="text-lg">Workout Plan</CardTitle>
           </CardHeader>
@@ -203,3 +262,4 @@ const WorkoutBuilder = () => {
 };
 
 export default WorkoutBuilder;
+
