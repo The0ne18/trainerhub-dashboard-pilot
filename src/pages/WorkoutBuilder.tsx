@@ -1,10 +1,12 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Search, Plus, Dumbbell, Save, ChevronRight, User, FileText, BookOpen } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AssignWorkoutDialog } from '@/components/workouts/AssignWorkoutDialog';
 
 const exerciseCategories = ['All', 'Strength', 'Cardio', 'Flexibility', 'Balance', 'Core'];
 
@@ -45,6 +47,8 @@ const savedTemplates = [
 ];
 
 const WorkoutBuilder = () => {
+  const [workoutName, setWorkoutName] = useState('Strength Training - Intermediate');
+  
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -57,10 +61,11 @@ const WorkoutBuilder = () => {
             <Save className="mr-2 h-4 w-4" />
             Save as Template
           </Button>
-          <Button className="bg-trainer-purple hover:bg-trainer-dark-purple">
-            <User className="mr-2 h-4 w-4" />
-            Assign to Client
-          </Button>
+          <AssignWorkoutDialog 
+            workoutName={workoutName} 
+            exercises={2} 
+            difficulty="Intermediate"
+          />
         </div>
       </div>
       
@@ -248,7 +253,12 @@ const WorkoutBuilder = () => {
             </Tabs>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Input placeholder="Workout Name" className="max-w-sm" defaultValue="Strength Training - Intermediate" />
+            <Input 
+              placeholder="Workout Name" 
+              className="max-w-sm" 
+              value={workoutName}
+              onChange={(e) => setWorkoutName(e.target.value)}
+            />
             <Button className="bg-trainer-purple hover:bg-trainer-dark-purple">
               Save Workout
               <ChevronRight className="ml-2 h-4 w-4" />
