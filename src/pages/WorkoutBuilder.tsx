@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -66,6 +65,40 @@ const WorkoutBuilder = () => {
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        {/* Saved Templates */}
+        <Card className="card-shadow hidden lg:block col-span-1 h-fit max-h-[650px] overflow-y-auto">
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <BookOpen className="h-5 w-5 text-trainer-purple" />
+              Saved Templates
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {savedTemplates.length === 0 ? (
+              <div className="text-muted-foreground italic text-sm">No templates saved yet.</div>
+            ) : (
+              savedTemplates.map(template => (
+                <div key={template.id} className="p-4 rounded-md border flex items-center gap-3 justify-between hover:bg-secondary transition cursor-pointer">
+                  <div>
+                    <div className="flex items-center gap-1">
+                      <FileText className="h-4 w-4 text-muted-foreground mr-1" />
+                      <span className="font-medium">{template.name}</span>
+                    </div>
+                    <div className="flex gap-2 mt-0.5">
+                      <Badge variant="outline" className="text-xs">{template.type}</Badge>
+                      <span className="text-xs text-muted-foreground">{template.exercises} Exercises</span>
+                      <Badge variant="outline" className="text-xs">{template.difficulty}</Badge>
+                    </div>
+                  </div>
+                  <Button size="sm" variant="outline">
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))
+            )}
+          </CardContent>
+        </Card>
+
         {/* Exercise Library */}
         <Card className="card-shadow">
           <CardHeader className="pb-2">
@@ -106,40 +139,6 @@ const WorkoutBuilder = () => {
                 </div>
               ))}
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Saved Templates */}
-        <Card className="card-shadow hidden lg:block col-span-1 h-fit max-h-[650px] overflow-y-auto">
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <BookOpen className="h-5 w-5 text-trainer-purple" />
-              Saved Templates
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {savedTemplates.length === 0 ? (
-              <div className="text-muted-foreground italic text-sm">No templates saved yet.</div>
-            ) : (
-              savedTemplates.map(template => (
-                <div key={template.id} className="p-4 rounded-md border flex items-center gap-3 justify-between hover:bg-secondary transition cursor-pointer">
-                  <div>
-                    <div className="flex items-center gap-1">
-                      <FileText className="h-4 w-4 text-muted-foreground mr-1" />
-                      <span className="font-medium">{template.name}</span>
-                    </div>
-                    <div className="flex gap-2 mt-0.5">
-                      <Badge variant="outline" className="text-xs">{template.type}</Badge>
-                      <span className="text-xs text-muted-foreground">{template.exercises} Exercises</span>
-                      <Badge variant="outline" className="text-xs">{template.difficulty}</Badge>
-                    </div>
-                  </div>
-                  <Button size="sm" variant="outline">
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))
-            )}
           </CardContent>
         </Card>
 
@@ -262,4 +261,3 @@ const WorkoutBuilder = () => {
 };
 
 export default WorkoutBuilder;
-
