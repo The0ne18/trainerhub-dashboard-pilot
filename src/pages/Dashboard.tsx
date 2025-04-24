@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,8 +8,22 @@ import { ScheduleSessionDialog } from "@/components/sessions/ScheduleSessionDial
 const Dashboard = () => {
   // Demo data - would come from API in real app
   const stats = [
-    { label: 'Active Clients', value: '24', icon: Users, color: 'bg-blue-500', trend: '+3 this month' },
-    { label: 'Upcoming Sessions', value: '12', icon: CalendarDays, color: 'bg-green-500', trend: 'Today: 4' }
+    { 
+      label: 'Active Clients', 
+      value: '24', 
+      icon: Users, 
+      color: 'bg-blue-500', 
+      trend: '+3 this month',
+      className: 'col-span-2' // Expand to 2 columns
+    },
+    { 
+      label: 'Upcoming Sessions', 
+      value: '12', 
+      icon: CalendarDays, 
+      color: 'bg-green-500', 
+      trend: 'Today: 4',
+      className: 'col-span-2' // Expand to 2 columns
+    }
   ];
   
   const topClients = [
@@ -38,9 +51,9 @@ const Dashboard = () => {
       </div>
       
       {/* Stat cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
         {stats.map((stat) => (
-          <Card key={stat.label} className="card-shadow">
+          <Card key={stat.label} className={`card-shadow ${stat.className}`}>
             <CardContent className="p-6">
               <div className="flex justify-between items-start">
                 <div>
