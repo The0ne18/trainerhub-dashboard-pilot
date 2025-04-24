@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -6,29 +5,28 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Plus, UserPlus, Upload, Phone, Mail } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-// Updated form validation schema
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   email: z.string().email({ message: "Invalid email address" }),
   phone: z.string().regex(/^\+?[1-9]\d{1,14}$/, { message: "Invalid phone number" }),
   goal: z.string().optional(),
   plan: z.string().optional(),
-  image: z.instanceof(FileList).optional()
+  image: z.instanceof(FileList).optional(),
+  clientType: z.enum(["subscription", "one-time"]),
 });
 
-// Update the interface to match the schema
 interface FormData extends z.infer<typeof formSchema> {}
 
 export function AddClientDialog() {
   const { toast } = useToast();
   const [previewUrl, setPreviewUrl] = React.useState<string>("");
   
-  // Use the zod resolver with the form
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -36,7 +34,8 @@ export function AddClientDialog() {
       email: "",
       phone: "",
       goal: "",
-      plan: ""
+      plan: "",
+      clientType: "subscription"
     }
   });
 
@@ -54,7 +53,6 @@ export function AddClientDialog() {
   };
 
   const onSubmit = (data: FormData) => {
-    // In a real app, you would handle the form submission here
     console.log('Form submitted:', data);
     toast({
       title: "Success",
@@ -96,6 +94,41 @@ export function AddClientDialog() {
               />
               <p className="text-sm text-muted-foreground">Click to upload profile picture</p>
             </div>
+
+            <FormField
+              control={form.control}
+              name="clientType"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Client Type</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex flex-col space-y-1"
+                    >
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="subscription" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          Subscription Client
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="one-time" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          One-time Client
+                        </FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <FormField
               control={form.control}
