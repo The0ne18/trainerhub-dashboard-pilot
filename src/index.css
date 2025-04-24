@@ -83,6 +83,18 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 265 93% 58%;
   }
+
+  /* Improve font rendering */
+  body {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Ensure smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 @layer base {
@@ -92,6 +104,11 @@
 
   body {
     @apply bg-background text-foreground;
+    letter-spacing: -0.01em;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight;
   }
 }
 
@@ -107,4 +124,18 @@
   .trainer-gradient {
     @apply bg-gradient-to-r from-trainer-purple to-trainer-light-purple text-white;
   }
+
+  .gradient-border {
+    @apply relative;
+  }
+
+  .gradient-border::before {
+    content: "";
+    @apply absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-trainer-purple to-trainer-light-purple;
+  }
+
+  .link-underline {
+    @apply relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-primary after:transition-transform after:duration-300 hover:after:origin-bottom-left hover:after:scale-x-100;
+  }
 }
+
