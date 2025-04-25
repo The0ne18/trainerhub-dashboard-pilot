@@ -62,8 +62,8 @@ export function AddClientDialog() {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button className="bg-trainer-purple hover:bg-trainer-dark-purple">
+      <DialogTrigger asChild data-add-client-dialog-trigger>
+        <Button className="bg-purple-600 hover:bg-purple-700 text-white">
           <Plus className="mr-2 h-4 w-4" />
           Add New Client
         </Button>

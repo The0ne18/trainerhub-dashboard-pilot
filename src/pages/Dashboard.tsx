@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -94,19 +93,6 @@ const Dashboard = () => {
         </div>
         <div className="mt-4 md:mt-0 flex space-x-2">
           <ScheduleSessionDialog />
-          <Button 
-            className="rounded-lg bg-purple-600 text-white hover:bg-purple-700 
-              focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-            onClick={() => {
-              const addClientDialog = document.querySelector('[data-add-client-dialog-trigger]');
-              if (addClientDialog instanceof HTMLElement) {
-                addClientDialog.click();
-              }
-            }}
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            Add New Client
-          </Button>
           <AddClientDialog />
         </div>
       </div>
