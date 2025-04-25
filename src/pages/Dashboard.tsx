@@ -9,9 +9,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { toast } from "sonner";
 import MagazineFeatures from '@/components/dashboard/MagazineFeatures';
+import { AddClientDialog } from '@/components/clients/AddClientDialog';
 
 const Dashboard = () => {
-  // Demo data - would come from API in real app
   const stats = [
     { 
       label: 'Active Clients', 
@@ -93,10 +93,7 @@ const Dashboard = () => {
         </div>
         <div className="mt-4 md:mt-0 flex space-x-2">
           <ScheduleSessionDialog />
-          <Button variant="outline" className="transition-all hover:bg-primary hover:text-white">
-            <Plus className="mr-2 h-4 w-4" />
-            New Client
-          </Button>
+          <AddClientDialog />
         </div>
       </div>
       
