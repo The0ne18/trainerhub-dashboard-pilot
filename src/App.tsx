@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import MainLayout from "@/components/layout/MainLayout";
 import Dashboard from "@/pages/Dashboard";
 import Clients from "@/pages/Clients";
+import ClientProfile from "@/pages/ClientProfile";
 import WorkoutBuilder from "@/pages/WorkoutBuilder";
 import Progress from "@/pages/Progress";
 import CalendarPage from "@/pages/Calendar";
@@ -31,6 +31,11 @@ const App = () => (
           <Route path="/clients" element={
             <MainLayout>
               <Clients />
+            </MainLayout>
+          } />
+          <Route path="/clients/:id" element={
+            <MainLayout>
+              <ClientProfile />
             </MainLayout>
           } />
           <Route path="/workouts" element={

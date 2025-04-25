@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
@@ -62,6 +63,7 @@ const clientsData = [
 const Clients = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilter, setActiveFilter] = useState('all');
+  const navigate = useNavigate();
   
   const filteredClients = clientsData.filter(client => {
     const matchesSearch = client.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -119,7 +121,11 @@ const Clients = () => {
       
       <div className="grid grid-cols-1 gap-4">
         {filteredClients.map(client => (
-          <Card key={client.id} className="card-shadow overflow-hidden">
+          <Card 
+            key={client.id} 
+            className="card-shadow overflow-hidden cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() => navigate(`/clients/${client.id}`)}
+          >
             <CardContent className="p-0">
               <div className="flex flex-col sm:flex-row">
                 <div className="w-full sm:w-24 h-24 bg-gray-200">
