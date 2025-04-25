@@ -1,5 +1,19 @@
-
 import React, { useState } from 'react';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -27,6 +41,7 @@ import {
   DrawerTrigger,
   DrawerFooter
 } from '@/components/ui/drawer';
+import { DraggableExercise } from '@/components/workouts/DraggableExercise';
 
 const exerciseCategories = ['All', 'Strength', 'Cardio', 'Flexibility', 'Balance', 'Core'];
 
@@ -73,6 +88,22 @@ const WorkoutBuilder = () => {
   const [searchTerm, setSearchTerm] = useState('');
   
   const isMobile = useIsMobile();
+
+  const [exercises, setExercises] = useState([
+    { id: 'ex1', name: 'Barbell Squat', category: 'Strength' },
+    { id: 'ex2', name: 'Push-Up', category: 'Strength' },
+  ]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
   
   // Filter exercises based on selected category and search term
   const filteredExercises = exerciseLibrary.filter(exercise => {
@@ -92,6 +123,22 @@ const WorkoutBuilder = () => {
     if (isMobile) {
       setDrawerOpen(false);
     }
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      setExercises((items) => {
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over.id);
+        return arrayMove(items, oldIndex, newIndex);
+      });
+    }
+  };
+
+  const handleRemoveExercise = (exerciseId: string) => {
+    setExercises(exercises.filter((ex) => ex.id !== exerciseId));
   };
   
   const renderExerciseLibrary = () => (
@@ -182,6 +229,45 @@ const WorkoutBuilder = () => {
       )}
     </div>
   );
+
+  const renderExerciseList = () => (
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
+      <SortableContext items={exercises} strategy={verticalListSortingStrategy}>
+        <div className="space-y-4">
+          {exercises.map((exercise) => (
+            <DraggableExercise
+              key={exercise.id}
+              id={exercise.id}
+              name={exercise.name}
+              category={exercise.category}
+              onRemove={() => handleRemoveExercise(exercise.id)}
+            />
+          ))}
+        </div>
+      </SortableContext>
+    </DndContext>
+  );
+
+  const renderMainWorkoutSection = () => (
+    <TabsContent value="main" className="space-y-4">
+      {exercises.length === 0 ? (
+        <div className="p-10 border-2 border-dashed rounded-md text-center">
+          <Dumbbell className="h-10 w-10 text-muted-foreground mx-auto mb-2" />
+          <p className="text-muted-foreground">Add exercises to your workout</p>
+        </div>
+      ) : (
+        renderExerciseList()
+      )}
+      <Button variant="outline" className="w-full mt-2" onClick={() => setDrawerOpen(true)}>
+        <Plus className="h-4 w-4 mr-2" />
+        Add Exercise
+      </Button>
+    </TabsContent>
+  );
   
   // Mobile layout components
   const ExerciseDrawer = () => (
@@ -253,73 +339,7 @@ const WorkoutBuilder = () => {
               </div>
             </TabsContent>
             
-            <TabsContent value="main" className="space-y-4 mt-4">
-              <div className="rounded-md border bg-muted/30 p-4">
-                <div className="flex justify-between mb-2">
-                  <div>
-                    <p className="font-medium">Barbell Squat</p>
-                    <Badge variant="outline" className="text-xs mt-1">
-                      Strength
-                    </Badge>
-                  </div>
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-                
-                <div className="flex gap-2 mt-3">
-                  <div className="flex-1">
-                    <p className="text-xs text-muted-foreground mb-1">Sets</p>
-                    <Input type="number" defaultValue="3" className="h-8" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-xs text-muted-foreground mb-1">Reps</p>
-                    <Input type="number" defaultValue="10" className="h-8" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-xs text-muted-foreground mb-1">Weight</p>
-                    <Input defaultValue="120lbs" className="h-8" />
-                  </div>
-                </div>
-                
-                <Input placeholder="Notes (optional)" className="mt-3 text-sm" />
-              </div>
-              
-              <div className="rounded-md border bg-muted/30 p-4">
-                <div className="flex justify-between mb-2">
-                  <div>
-                    <p className="font-medium">Push-Up</p>
-                    <Badge variant="outline" className="text-xs mt-1">
-                      Strength
-                    </Badge>
-                  </div>
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-                
-                <div className="flex gap-2 mt-3">
-                  <div className="flex-1">
-                    <p className="text-xs text-muted-foreground mb-1">Sets</p>
-                    <Input type="number" defaultValue="3" className="h-8" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-xs text-muted-foreground mb-1">Reps</p>
-                    <Input type="number" defaultValue="15" className="h-8" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-xs text-muted-foreground mb-1">Weight</p>
-                    <Input defaultValue="Body" className="h-8" />
-                  </div>
-                </div>
-                
-                <Input 
-                  placeholder="Notes (optional)" 
-                  className="mt-3 text-sm" 
-                  defaultValue="Chest to floor, full extension" 
-                />
-              </div>
-            </TabsContent>
+            {renderMainWorkoutSection()}
             
             <TabsContent value="cooldown" className="space-y-4 mt-4">
               <div className="p-6 border-2 border-dashed rounded-md text-center">
@@ -433,74 +453,7 @@ const WorkoutBuilder = () => {
                 </div>
               </TabsContent>
               
-              <TabsContent value="main" className="space-y-4">
-                <div className="rounded-md border bg-muted/30 p-4">
-                  <div className="flex justify-between mb-2">
-                    <div>
-                      <p className="font-medium">Barbell Squat</p>
-                      <Badge variant="outline" className="text-xs">
-                        Strength
-                      </Badge>
-                    </div>
-                    <div className="flex gap-2">
-                      <Input 
-                        type="number" 
-                        placeholder="Sets" 
-                        className="w-16 text-center" 
-                        defaultValue="3"
-                      />
-                      <Input 
-                        type="number" 
-                        placeholder="Reps" 
-                        className="w-16 text-center"
-                        defaultValue="10"
-                      />
-                      <Input 
-                        placeholder="Weight" 
-                        className="w-20 text-center"
-                        defaultValue="120lbs"
-                      />
-                    </div>
-                  </div>
-                  <Input placeholder="Notes (optional)" className="mt-2" />
-                </div>
-                
-                <div className="rounded-md border bg-muted/30 p-4">
-                  <div className="flex justify-between mb-2">
-                    <div>
-                      <p className="font-medium">Push-Up</p>
-                      <Badge variant="outline" className="text-xs">
-                        Strength
-                      </Badge>
-                    </div>
-                    <div className="flex gap-2">
-                      <Input 
-                        type="number" 
-                        placeholder="Sets" 
-                        className="w-16 text-center" 
-                        defaultValue="3"
-                      />
-                      <Input 
-                        type="number" 
-                        placeholder="Reps" 
-                        className="w-16 text-center"
-                        defaultValue="15"
-                      />
-                      <Input 
-                        placeholder="Weight" 
-                        className="w-20 text-center"
-                        defaultValue="Body"
-                      />
-                    </div>
-                  </div>
-                  <Input placeholder="Notes (optional)" className="mt-2" defaultValue="Chest to floor, full extension" />
-                </div>
-                
-                <Button variant="outline" className="w-full mt-2">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Exercise
-                </Button>
-              </TabsContent>
+              {renderMainWorkoutSection()}
               
               <TabsContent value="cooldown" className="space-y-4">
                 <div className="p-10 border-2 border-dashed rounded-md text-center">
