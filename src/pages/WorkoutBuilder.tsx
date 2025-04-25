@@ -4,9 +4,29 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Search, Plus, Dumbbell, Save, ChevronRight, User, FileText, BookOpen } from 'lucide-react';
+import { Search, Plus, Dumbbell, Save, ChevronRight, User, FileText, BookOpen, X } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AssignWorkoutDialog } from '@/components/workouts/AssignWorkoutDialog';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { FAB } from '@/components/ui/fab';
+import { SkeletonCard } from '@/components/ui/skeleton-loader';
+import { 
+  Sheet, 
+  SheetContent, 
+  SheetHeader, 
+  SheetTitle, 
+  SheetTrigger,
+  SheetFooter
+} from '@/components/ui/sheet';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+  DrawerFooter
+} from '@/components/ui/drawer';
 
 const exerciseCategories = ['All', 'Strength', 'Cardio', 'Flexibility', 'Balance', 'Core'];
 
@@ -48,8 +68,283 @@ const savedTemplates = [
 
 const WorkoutBuilder = () => {
   const [workoutName, setWorkoutName] = useState('Strength Training - Intermediate');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   
-  return (
+  const isMobile = useIsMobile();
+  
+  // Filter exercises based on selected category and search term
+  const filteredExercises = exerciseLibrary.filter(exercise => {
+    const matchesCategory = selectedCategory === 'All' || exercise.category === selectedCategory;
+    const matchesSearch = searchTerm === '' || 
+      exercise.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      exercise.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      exercise.bodyPart.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    return matchesCategory && matchesSearch;
+  });
+  
+  // Handle adding exercise to the workout
+  const handleAddExercise = (exercise) => {
+    console.log('Adding exercise:', exercise);
+    // This would normally update the workout state
+    if (isMobile) {
+      setDrawerOpen(false);
+    }
+  };
+  
+  const renderExerciseLibrary = () => (
+    <>
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input 
+          placeholder="Search exercises..." 
+          className="pl-10" 
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+      
+      <div className="flex flex-wrap gap-2 mt-3">
+        {exerciseCategories.map(category => (
+          <Badge 
+            key={category} 
+            variant={category === selectedCategory ? 'default' : 'outline'} 
+            className="cursor-pointer"
+            onClick={() => setSelectedCategory(category)}
+          >
+            {category}
+          </Badge>
+        ))}
+      </div>
+      
+      <div className={`space-y-2 mt-3 ${isMobile ? 'max-h-[60vh]' : 'max-h-[500px]'} overflow-y-auto pr-2`}>
+        {filteredExercises.length === 0 ? (
+          <div className="text-center p-4 text-muted-foreground">
+            No exercises found matching your criteria
+          </div>
+        ) : (
+          filteredExercises.map(exercise => (
+            <div 
+              key={exercise.id} 
+              className="p-3 border rounded-md hover:bg-secondary cursor-pointer flex justify-between items-center group"
+            >
+              <div>
+                <p className="font-medium">{exercise.name}</p>
+                <div className="flex gap-2 mt-1">
+                  <Badge variant="outline" className="text-xs">
+                    {exercise.category}
+                  </Badge>
+                  <p className="text-xs text-muted-foreground">{exercise.bodyPart}</p>
+                </div>
+              </div>
+              <Button 
+                variant="ghost" 
+                className={isMobile ? "opacity-100" : "opacity-0 group-hover:opacity-100"} 
+                size="sm"
+                onClick={() => handleAddExercise(exercise)}
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
+          ))
+        )}
+      </div>
+    </>
+  );
+  
+  const renderTemplateSection = () => (
+    <div className={`space-y-2 ${isMobile ? 'flex overflow-x-auto space-y-0 space-x-3 pb-4' : ''}`}>
+      {savedTemplates.length === 0 ? (
+        <div className="text-muted-foreground italic text-sm">No templates saved yet.</div>
+      ) : (
+        savedTemplates.map(template => (
+          <div 
+            key={template.id} 
+            className={`p-4 rounded-md border hover:bg-secondary transition cursor-pointer ${
+              isMobile ? 'min-w-[200px] flex-shrink-0' : ''
+            }`}
+          >
+            <div className="flex items-center gap-1">
+              <FileText className="h-4 w-4 text-muted-foreground mr-1" />
+              <span className="font-medium">{template.name}</span>
+            </div>
+            <div className="flex gap-2 mt-2">
+              <Badge variant="outline" className="text-xs">{template.type}</Badge>
+              <span className="text-xs text-muted-foreground">{template.exercises} Exercises</span>
+            </div>
+            <Button size="sm" variant="outline" className="w-full mt-3 text-xs">
+              Use Template
+            </Button>
+          </div>
+        ))
+      )}
+    </div>
+  );
+  
+  // Mobile layout components
+  const ExerciseDrawer = () => (
+    <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+      <DrawerContent className="max-h-[85vh]">
+        <DrawerHeader>
+          <DrawerTitle>Exercise Library</DrawerTitle>
+          <DrawerDescription>Search for exercises to add to your workout</DrawerDescription>
+        </DrawerHeader>
+        <div className="px-4 pb-2">
+          {renderExerciseLibrary()}
+        </div>
+        <DrawerFooter className="pt-2">
+          <Button variant="outline" onClick={() => setDrawerOpen(false)}>
+            Close
+          </Button>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  );
+  
+  const MobileWorkoutBuilder = () => (
+    <div className="space-y-6">
+      <div className="flex flex-col gap-4">
+        <div>
+          <h1 className="text-3xl font-bold">Workout Builder</h1>
+          <p className="text-muted-foreground mt-1">Create custom workouts for your clients</p>
+        </div>
+        
+        <div className="flex justify-between items-center">
+          <Input 
+            placeholder="Workout Name" 
+            value={workoutName}
+            onChange={(e) => setWorkoutName(e.target.value)}
+            className="max-w-[200px]"
+          />
+          <Button variant="outline" size="sm">
+            <Save className="h-4 w-4 mr-2" />
+            Save
+          </Button>
+        </div>
+      </div>
+
+      <Card className="card-shadow">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-lg">Templates</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {renderTemplateSection()}
+        </CardContent>
+      </Card>
+      
+      <Card className="card-shadow">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-lg">Workout</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Tabs defaultValue="warmup">
+            <TabsList className="w-full">
+              <TabsTrigger value="warmup" className="flex-1">Warm-up</TabsTrigger>
+              <TabsTrigger value="main" className="flex-1">Main</TabsTrigger>
+              <TabsTrigger value="cooldown" className="flex-1">Cool-down</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="warmup" className="space-y-4 mt-4">
+              <div className="p-6 border-2 border-dashed rounded-md text-center">
+                <Dumbbell className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                <p className="text-muted-foreground text-sm">Add exercises to warm-up</p>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="main" className="space-y-4 mt-4">
+              <div className="rounded-md border bg-muted/30 p-4">
+                <div className="flex justify-between mb-2">
+                  <div>
+                    <p className="font-medium">Barbell Squat</p>
+                    <Badge variant="outline" className="text-xs mt-1">
+                      Strength
+                    </Badge>
+                  </div>
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+                
+                <div className="flex gap-2 mt-3">
+                  <div className="flex-1">
+                    <p className="text-xs text-muted-foreground mb-1">Sets</p>
+                    <Input type="number" defaultValue="3" className="h-8" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-xs text-muted-foreground mb-1">Reps</p>
+                    <Input type="number" defaultValue="10" className="h-8" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-xs text-muted-foreground mb-1">Weight</p>
+                    <Input defaultValue="120lbs" className="h-8" />
+                  </div>
+                </div>
+                
+                <Input placeholder="Notes (optional)" className="mt-3 text-sm" />
+              </div>
+              
+              <div className="rounded-md border bg-muted/30 p-4">
+                <div className="flex justify-between mb-2">
+                  <div>
+                    <p className="font-medium">Push-Up</p>
+                    <Badge variant="outline" className="text-xs mt-1">
+                      Strength
+                    </Badge>
+                  </div>
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+                
+                <div className="flex gap-2 mt-3">
+                  <div className="flex-1">
+                    <p className="text-xs text-muted-foreground mb-1">Sets</p>
+                    <Input type="number" defaultValue="3" className="h-8" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-xs text-muted-foreground mb-1">Reps</p>
+                    <Input type="number" defaultValue="15" className="h-8" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-xs text-muted-foreground mb-1">Weight</p>
+                    <Input defaultValue="Body" className="h-8" />
+                  </div>
+                </div>
+                
+                <Input 
+                  placeholder="Notes (optional)" 
+                  className="mt-3 text-sm" 
+                  defaultValue="Chest to floor, full extension" 
+                />
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="cooldown" className="space-y-4 mt-4">
+              <div className="p-6 border-2 border-dashed rounded-md text-center">
+                <Dumbbell className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                <p className="text-muted-foreground text-sm">Add exercises to cool-down</p>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+        <CardFooter className="flex justify-between">
+          <AssignWorkoutDialog 
+            workoutName={workoutName} 
+            exercises={2} 
+            difficulty="Intermediate"
+          />
+        </CardFooter>
+      </Card>
+      
+      <FAB onClick={() => setDrawerOpen(true)} />
+      <ExerciseDrawer />
+    </div>
+  );
+  
+  // Desktop layout
+  const DesktopWorkoutBuilder = () => (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -110,40 +405,7 @@ const WorkoutBuilder = () => {
             <CardTitle className="text-lg">Exercise Library</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Search exercises..." className="pl-10" />
-            </div>
-            
-            <div className="flex flex-wrap gap-2">
-              {exerciseCategories.map(category => (
-                <Badge key={category} variant={category === 'All' ? 'default' : 'outline'} className="cursor-pointer">
-                  {category}
-                </Badge>
-              ))}
-            </div>
-            
-            <div className="space-y-2 max-h-[500px] overflow-y-auto pr-2">
-              {exerciseLibrary.map(exercise => (
-                <div 
-                  key={exercise.id} 
-                  className="p-3 border rounded-md hover:bg-secondary cursor-pointer flex justify-between items-center group"
-                >
-                  <div>
-                    <p className="font-medium">{exercise.name}</p>
-                    <div className="flex gap-2 mt-1">
-                      <Badge variant="outline" className="text-xs">
-                        {exercise.category}
-                      </Badge>
-                      <p className="text-xs text-muted-foreground">{exercise.bodyPart}</p>
-                    </div>
-                  </div>
-                  <Button variant="ghost" className="opacity-0 group-hover:opacity-100" size="sm">
-                    <Plus className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
-            </div>
+            {renderExerciseLibrary()}
           </CardContent>
         </Card>
 
@@ -172,7 +434,7 @@ const WorkoutBuilder = () => {
               </TabsContent>
               
               <TabsContent value="main" className="space-y-4">
-                <div className="rounded-md border-2 border-trainer-light-purple bg-trainer-gray p-4">
+                <div className="rounded-md border bg-muted/30 p-4">
                   <div className="flex justify-between mb-2">
                     <div>
                       <p className="font-medium">Barbell Squat</p>
@@ -203,7 +465,7 @@ const WorkoutBuilder = () => {
                   <Input placeholder="Notes (optional)" className="mt-2" />
                 </div>
                 
-                <div className="rounded-md border-2 border-trainer-light-purple bg-trainer-gray p-4">
+                <div className="rounded-md border bg-muted/30 p-4">
                   <div className="flex justify-between mb-2">
                     <div>
                       <p className="font-medium">Push-Up</p>
@@ -268,6 +530,8 @@ const WorkoutBuilder = () => {
       </div>
     </div>
   );
+  
+  return isMobile ? <MobileWorkoutBuilder /> : <DesktopWorkoutBuilder />;
 };
 
 export default WorkoutBuilder;
