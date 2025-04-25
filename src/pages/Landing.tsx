@@ -1,7 +1,26 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Dumbbell, Users, Calendar, ChartLine, CheckCircle, Shield, Gift, Star, Play, MessageCircle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { ArrowRight, Dumbbell, Users, Calendar, ChartLine, CheckCircle, Shield, Gift, Star, Play, MessageCircle, FileText } from 'lucide-react';
+
+const magazines = [
+  {
+    name: "Tech Weekly",
+    quote: "Revolutionary fitness platform",
+    iconColor: "text-blue-500"
+  },
+  {
+    name: "Fitness Today", 
+    quote: "Best trainer platform of 2025",
+    iconColor: "text-green-500"
+  },
+  {
+    name: "Digital Trends",
+    quote: "Leading the future of fitness",
+    iconColor: "text-purple-500"
+  }
+];
 
 const Landing = () => {
   return (
@@ -145,7 +164,7 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Enhanced Reviews Section */}
+      {/* Reviews Section */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">What Our Users Say</h2>
@@ -222,7 +241,32 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Social Proof Section - New section */}
+      {/* Magazine Features Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Featured In</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {magazines.map((magazine, index) => (
+              <Card 
+                key={magazine.name}
+                className="group hover:shadow-lg transition-all duration-300 border-none bg-white"
+              >
+                <CardContent className="p-6 flex items-center">
+                  <div className={`p-3 rounded-full ${magazine.iconColor} bg-white shadow-sm mr-4`}>
+                    <FileText className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-1">{magazine.name}</h3>
+                    <p className="text-muted-foreground text-sm">{magazine.quote}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Social Proof Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
@@ -238,7 +282,7 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* CTA Section - Enhanced with gradient background */}
+      {/* CTA Section */}
       <section className="py-20 bg-trainer-purple text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Transform Your Training Business?</h2>
