@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -63,7 +64,7 @@ export function AddClientDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild data-add-client-dialog-trigger>
-        <Button className="bg-green-400 hover:bg-green-500 text-white">
+        <Button variant="secondary" size="default">
           <Plus className="mr-2 h-4 w-4" />
           Add New Client
         </Button>
