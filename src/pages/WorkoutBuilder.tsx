@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Save, BookOpen } from 'lucide-react';
+import { Save, BookOpen, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
