@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { toast } from "sonner";
+import MagazineFeatures from '@/components/dashboard/MagazineFeatures';
 
 const Dashboard = () => {
   // Demo data - would come from API in real app
@@ -134,6 +134,8 @@ const Dashboard = () => {
           </Card>
         ))}
       </div>
+      
+      <MagazineFeatures />
       
       <TooltipProvider>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
