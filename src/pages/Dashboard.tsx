@@ -8,7 +8,6 @@ import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { toast } from "sonner";
-import MagazineFeatures from '@/components/dashboard/MagazineFeatures';
 import { AddClientDialog } from '@/components/clients/AddClientDialog';
 
 const Dashboard = () => {
@@ -131,8 +130,6 @@ const Dashboard = () => {
           </Card>
         ))}
       </div>
-      
-      <MagazineFeatures />
       
       <TooltipProvider>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
