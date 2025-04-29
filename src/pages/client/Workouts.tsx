@@ -7,6 +7,12 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Dumbbell, Calendar, CheckCircle, Clock, ChevronRight, PlayCircle } from 'lucide-react';
 
+// Format date to display month and day
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+};
+
 const ClientWorkouts = () => {
   const [isLoading, setIsLoading] = useState(true);
   
@@ -62,12 +68,6 @@ const ClientWorkouts = () => {
       setIsLoading(false);
     }, 1000);
   }, []);
-  
-  // Format date to display month and day
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-  };
 
   return (
     <div className="space-y-8">
