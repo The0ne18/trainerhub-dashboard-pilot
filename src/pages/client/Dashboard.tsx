@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
@@ -362,13 +361,19 @@ const ClientDashboard = () => {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="date" />
                     <YAxis domain={['dataMin - 5', 'dataMax + 5']} />
-                    <ChartTooltip
-                      content={(props) => (
-                        <ChartTooltipContent
-                          className="bg-white shadow-lg border text-black"
-                          {...props}
-                        />
-                      )}
+                    <Tooltip 
+                      content={(props) => {
+                        return (
+                          <div className="bg-white shadow-lg border text-black p-2 rounded">
+                            <p className="font-medium">{props.label}</p>
+                            {props.payload?.map((entry, index) => (
+                              <p key={index} style={{ color: entry.color }}>
+                                Weight: {entry.value} lbs
+                              </p>
+                            ))}
+                          </div>
+                        );
+                      }}
                     />
                     <Line 
                       type="monotone" 
