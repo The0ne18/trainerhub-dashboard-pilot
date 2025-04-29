@@ -20,6 +20,7 @@ import Landing from "@/pages/Landing";
 import ClientDashboard from "@/pages/client/Dashboard";
 import ClientWorkouts from "@/pages/client/Workouts";
 import ClientSchedule from "@/pages/client/Schedule";
+import WorkoutDetail from "@/pages/client/WorkoutDetail";
 
 const queryClient = new QueryClient();
 
@@ -74,6 +75,11 @@ const App = () => (
             <Route path="/client/workouts" element={
               <ClientLayout>
                 <ClientWorkouts />
+              </ClientLayout>
+            } />
+            <Route path="/client/workouts/:id" element={
+              <ClientLayout>
+                <WorkoutDetail />
               </ClientLayout>
             } />
             <Route path="/client/schedule" element={

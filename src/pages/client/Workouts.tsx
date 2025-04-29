@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
@@ -15,6 +16,7 @@ const formatDate = (dateString: string) => {
 
 const ClientWorkouts = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
   
   // Mock workout data
   const workouts = [
@@ -168,6 +170,11 @@ interface WorkoutCardProps {
 
 const WorkoutCard = ({ workout }: WorkoutCardProps) => {
   const [expanded, setExpanded] = useState(false);
+  const navigate = useNavigate();
+  
+  const handleStartWorkout = () => {
+    navigate(`/client/workouts/${workout.id}`);
+  };
   
   return (
     <Card className="overflow-hidden hover:shadow-md transition-shadow">
@@ -231,7 +238,11 @@ const WorkoutCard = ({ workout }: WorkoutCardProps) => {
           </Button>
           
           {workout.progress < 100 ? (
-            <Button size="sm" className="bg-blue-500 hover:bg-blue-600 text-white">
+            <Button 
+              size="sm" 
+              className="bg-blue-500 hover:bg-blue-600 text-white"
+              onClick={handleStartWorkout}
+            >
               <PlayCircle className="mr-1 h-4 w-4" />
               Start Workout
             </Button>
