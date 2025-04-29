@@ -1,8 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowRight, Dumbbell, Users, Calendar, ChartLine, CheckCircle, Shield, Gift, Star, Play, MessageCircle, FileText } from 'lucide-react';
+import { ArrowRight, Dumbbell, Users, Calendar, ChartLine, CheckCircle, Shield, Gift, Star, Play, MessageCircle, FileText, UserCircle } from 'lucide-react';
+import { useRole } from '@/context/RoleContext';
 
 const magazines = [
   {
@@ -22,6 +23,62 @@ const magazines = [
   }
 ];
 
+// Role selection component
+const RoleSelection = () => {
+  const { setRole } = useRole();
+  const navigate = useNavigate();
+
+  const handleRoleSelect = (role: 'trainer' | 'client') => {
+    setRole(role);
+    navigate(role === 'trainer' ? '/dashboard' : '/client/dashboard');
+  };
+
+  return (
+    <section className="py-20 bg-white">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+          How would you like to continue?
+        </h2>
+        <div className="flex flex-col md:flex-row gap-8 justify-center items-stretch max-w-4xl mx-auto">
+          <Card className="flex-1 group hover:shadow-lg transition-all duration-300 border-none bg-gradient-to-br from-purple-50 to-white">
+            <CardContent className="pt-10 pb-10 flex flex-col items-center text-center h-full">
+              <Users className="h-16 w-16 text-trainer-purple mb-6 group-hover:scale-110 transition-transform" />
+              <h3 className="text-2xl font-semibold mb-4">I'm a Trainer</h3>
+              <p className="text-muted-foreground mb-8">
+                Access your client management dashboard, create workouts, and schedule sessions.
+              </p>
+              <Button 
+                className="mt-auto bg-trainer-purple hover:bg-trainer-dark-purple"
+                onClick={() => handleRoleSelect('trainer')}
+              >
+                Continue as Trainer
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </CardContent>
+          </Card>
+          
+          <Card className="flex-1 group hover:shadow-lg transition-all duration-300 border-none bg-gradient-to-br from-blue-50 to-white">
+            <CardContent className="pt-10 pb-10 flex flex-col items-center text-center h-full">
+              <UserCircle className="h-16 w-16 text-blue-500 mb-6 group-hover:scale-110 transition-transform" />
+              <h3 className="text-2xl font-semibold mb-4">I'm a Client</h3>
+              <p className="text-muted-foreground mb-8">
+                View your training sessions, access your personalized workout plans, and track your fitness progress.
+              </p>
+              <Button 
+                className="mt-auto bg-blue-500 hover:bg-blue-600"
+                onClick={() => handleRoleSelect('client')}
+              >
+                Continue as Client
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const Landing = () => {
   return (
     <div className="min-h-screen">
@@ -31,12 +88,6 @@ const Landing = () => {
           <Dumbbell className="h-6 w-6 text-trainer-purple" />
           <span className="font-bold text-xl">TrainerHub</span>
         </div>
-        <Link to="/dashboard">
-          <Button variant="ghost">
-            Go to Dashboard
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-        </Link>
       </nav>
 
       {/* Hero Section - Enhanced with gradients and animations */}
@@ -49,20 +100,12 @@ const Landing = () => {
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 animate-fade-in">
               The all-in-one platform for personal trainers to manage clients, schedule sessions, and track progress with ease.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in">
-              <Link to="/dashboard">
-                <Button size="lg" className="bg-trainer-purple hover:bg-trainer-dark-purple w-full sm:w-auto">
-                  Get Started Now
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-              <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                Watch Demo
-              </Button>
-            </div>
           </div>
         </div>
       </section>
+
+      {/* Add Role Selection Section */}
+      <RoleSelection />
 
       {/* Video Showcase Section */}
       <section className="py-20 bg-gradient-to-b from-white to-purple-50">
@@ -282,17 +325,11 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA Section - Updated to use role selection */}
       <section className="py-20 bg-trainer-purple text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Transform Your Training Business?</h2>
-          <p className="text-xl mb-8 text-purple-100">Join thousands of trainers who are growing their business with TrainerHub.</p>
-          <Link to="/dashboard">
-            <Button size="lg" variant="secondary" className="hover:bg-white hover:text-trainer-purple">
-              Get Started Free
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-          </Link>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Transform Your Training Experience?</h2>
+          <p className="text-xl mb-8 text-purple-100">Join TrainerHub today as a trainer or client and reach your fitness goals.</p>
         </div>
       </section>
     </div>
