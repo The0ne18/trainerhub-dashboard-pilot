@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -6,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Search, Edit, Trash, Calendar, Dumbbell, Users } from 'lucide-react';
 import { AddClientDialog } from '@/components/clients/AddClientDialog';
+import { EditClientDialog } from '@/components/clients/EditClientDialog';
 
 const clientsData = [
   { 
@@ -63,9 +65,11 @@ const clientsData = [
 const Clients = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilter, setActiveFilter] = useState('all');
+  const [clients, setClients] = useState(clientsData);
+  const [editingClient, setEditingClient] = useState<null | typeof clientsData[0]>(null);
   const navigate = useNavigate();
   
-  const filteredClients = clientsData.filter(client => {
+  const filteredClients = clients.filter(client => {
     const matchesSearch = client.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
                            client.email.toLowerCase().includes(searchTerm.toLowerCase());
     
@@ -73,6 +77,21 @@ const Clients = () => {
     
     return matchesSearch && matchesTag;
   });
+
+  const handleClientClick = (clientId: number) => {
+    navigate(`/clients/${clientId}`);
+  };
+
+  const handleEditClick = (e: React.MouseEvent, client: typeof clientsData[0]) => {
+    e.stopPropagation();
+    setEditingClient(client);
+  };
+  
+  const handleClientUpdate = (updatedClient: Partial<typeof clientsData[0]>) => {
+    setClients(clients.map(client => 
+      client.id === updatedClient.id ? { ...client, ...updatedClient } : client
+    ));
+  };
 
   return (
     <div className="space-y-6">
@@ -83,6 +102,16 @@ const Clients = () => {
         </div>
         <AddClientDialog />
       </div>
+      
+      {/* Edit client dialog */}
+      {editingClient && (
+        <EditClientDialog
+          client={editingClient}
+          open={!!editingClient}
+          onOpenChange={(open) => !open && setEditingClient(null)}
+          onClientUpdated={handleClientUpdate}
+        />
+      )}
       
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
@@ -124,7 +153,7 @@ const Clients = () => {
           <Card 
             key={client.id} 
             className="card-shadow overflow-hidden cursor-pointer hover:shadow-md transition-shadow"
-            onClick={() => navigate(`/clients/${client.id}`)}
+            onClick={() => handleClientClick(client.id)}
           >
             <CardContent className="p-0">
               <div className="flex flex-col sm:flex-row">
@@ -160,7 +189,11 @@ const Clients = () => {
                     </div>
                   </div>
                   <div className="flex gap-2 mt-4 sm:mt-0">
-                    <Button size="sm" variant="outline">
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={(e) => handleEditClick(e, client)}
+                    >
                       <Edit className="h-4 w-4 mr-2" />
                       Edit
                     </Button>
