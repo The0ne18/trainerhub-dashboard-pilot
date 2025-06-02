@@ -11,7 +11,8 @@ import {
   Calendar, 
   Bell, 
   Search,
-  ArrowDown
+  ArrowDown,
+  FileText
 } from 'lucide-react';
 
 type NavItem = {
@@ -29,6 +30,7 @@ const Sidebar = () => {
     { label: 'Dashboard', icon: LayoutDashboard, href: '/' },
     { label: 'Clients', icon: Users, href: '/clients' },
     { label: 'Workouts', icon: Dumbbell, href: '/workouts' },
+    { label: 'Templates', icon: FileText, href: '/templates' },
     { label: 'Progress', icon: ChartLine, href: '/progress' },
     { label: 'Calendar', icon: Calendar, href: '/calendar' },
   ];

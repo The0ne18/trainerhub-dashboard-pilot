@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Save, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,6 +7,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AssignWorkoutDialog } from '@/components/workouts/AssignWorkoutDialog';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { FAB } from '@/components/ui/fab';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import {
   Drawer,
   DrawerContent,
@@ -42,6 +44,17 @@ const WorkoutBuilder = () => {
   ]);
   
   const isMobile = useIsMobile();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Load template data if coming from Templates page
+  useEffect(() => {
+    if (location.state?.template) {
+      const template = location.state.template;
+      setWorkoutName(template.name);
+      // You can extend this to load actual exercise data
+    }
+  }, [location.state]);
 
   const filteredExercises = exerciseLibrary.filter(exercise => {
     const matchesCategory = selectedCategory === 'All' || exercise.category === selectedCategory;
@@ -63,6 +76,26 @@ const WorkoutBuilder = () => {
     if (isMobile) {
       setDrawerOpen(false);
     }
+  };
+  
+  const handleSaveWorkout = () => {
+    // Save workout as template
+    const newTemplate = {
+      id: Date.now().toString(),
+      name: workoutName,
+      type: 'Custom', // You can determine this based on exercises
+      exercises: exercises.length,
+      difficulty: 'Intermediate', // You can determine this based on exercises
+      createdAt: new Date().toISOString().split('T')[0],
+      description: `Custom workout with ${exercises.length} exercises`
+    };
+
+    // In a real app, you'd save this to a database
+    console.log('Saving template:', newTemplate);
+    toast.success(`Template "${workoutName}" saved successfully!`);
+    
+    // Navigate to templates page
+    navigate('/templates');
   };
   
   const ExerciseDrawer = () => (
@@ -107,7 +140,7 @@ const WorkoutBuilder = () => {
             onChange={(e) => setWorkoutName(e.target.value)}
             className="max-w-[200px]"
           />
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={handleSaveWorkout}>
             <Save className="h-4 w-4 mr-2" />
             Save
           </Button>
@@ -147,13 +180,13 @@ const WorkoutBuilder = () => {
           <p className="text-muted-foreground mt-1">Create custom workouts for your clients</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline">
+          <Button variant="outline" onClick={handleSaveWorkout}>
             <Save className="mr-2 h-4 w-4" />
             Save as Template
           </Button>
           <AssignWorkoutDialog 
             workoutName={workoutName} 
-            exercises={2} 
+            exercises={exercises.length} 
             difficulty="Intermediate"
           />
         </div>
@@ -195,7 +228,7 @@ const WorkoutBuilder = () => {
               value={workoutName}
               onChange={(e) => setWorkoutName(e.target.value)}
             />
-            <Button className="bg-trainer-purple hover:bg-trainer-dark-purple">
+            <Button className="bg-trainer-purple hover:bg-trainer-dark-purple" onClick={handleSaveWorkout}>
               Save Workout
               <ChevronRight className="ml-2 h-4 w-4" />
             </Button>

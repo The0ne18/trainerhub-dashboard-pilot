@@ -11,6 +11,7 @@ import Dashboard from "@/pages/Dashboard";
 import Clients from "@/pages/Clients";
 import ClientProfile from "@/pages/ClientProfile";
 import WorkoutBuilder from "@/pages/WorkoutBuilder";
+import Templates from "@/pages/Templates";
 import Progress from "@/pages/Progress";
 import CalendarPage from "@/pages/Calendar";
 import NotFound from "@/pages/NotFound";
@@ -53,6 +54,11 @@ const App = () => (
             <Route path="/workouts" element={
               <MainLayout>
                 <WorkoutBuilder />
+              </MainLayout>
+            } />
+            <Route path="/templates" element={
+              <MainLayout>
+                <Templates />
               </MainLayout>
             } />
             <Route path="/progress" element={
