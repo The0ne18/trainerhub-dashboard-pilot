@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { Save, BookOpen, ChevronRight } from 'lucide-react';
+import { Save, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -17,7 +18,6 @@ import {
 } from '@/components/ui/drawer';
 import { ExerciseLibrary } from '@/components/workouts/ExerciseLibrary';
 import { WorkoutSection } from '@/components/workouts/WorkoutSection';
-import { TemplatesSection } from '@/components/workouts/TemplatesSection';
 
 const exerciseCategories = ['All', 'Strength', 'Cardio', 'Flexibility', 'Balance', 'Core'];
 
@@ -30,30 +30,6 @@ const exerciseLibrary = [
   { id: 6, name: 'Downward Dog', category: 'Flexibility', bodyPart: 'Full Body', difficulty: 'Easy' },
   { id: 7, name: 'Bicycle Crunch', category: 'Core', bodyPart: 'Core', difficulty: 'Medium' },
   { id: 8, name: 'Standing Balance', category: 'Balance', bodyPart: 'Legs', difficulty: 'Easy' }
-];
-
-const savedTemplates = [
-  {
-    id: 't1',
-    name: 'Full Body Blast',
-    type: 'Strength',
-    exercises: 6,
-    difficulty: 'Medium'
-  },
-  {
-    id: 't2',
-    name: 'Quick HIIT Cardio',
-    type: 'Cardio',
-    exercises: 4,
-    difficulty: 'Hard'
-  },
-  {
-    id: 't3',
-    name: 'Mobility Flow',
-    type: 'Flexibility',
-    exercises: 5,
-    difficulty: 'Easy'
-  }
 ];
 
 const WorkoutBuilder = () => {
@@ -138,15 +114,6 @@ const WorkoutBuilder = () => {
           </Button>
         </div>
       </div>
-
-      <Card className="card-shadow">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-lg">Templates</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <TemplatesSection templates={savedTemplates} onTemplateSelect={() => {}} />
-        </CardContent>
-      </Card>
       
       <Card className="card-shadow">
         <CardHeader className="pb-2">
@@ -221,19 +188,7 @@ const WorkoutBuilder = () => {
         </div>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        <Card className="card-shadow hidden lg:block col-span-1 h-fit max-h-[650px] overflow-y-auto">
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <BookOpen className="h-5 w-5 text-trainer-purple" />
-              Saved Templates
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <TemplatesSection templates={savedTemplates} onTemplateSelect={() => {}} />
-          </CardContent>
-        </Card>
-
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card className="card-shadow">
           <CardHeader className="pb-2">
             <CardTitle className="text-lg">Exercise Library</CardTitle>
