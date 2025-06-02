@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Save, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -117,42 +116,14 @@ const WorkoutBuilder = () => {
       
       <Card className="card-shadow">
         <CardHeader className="pb-2">
-          <CardTitle className="text-lg">Workout</CardTitle>
+          <CardTitle className="text-lg">Workout Plan</CardTitle>
         </CardHeader>
         <CardContent>
-          <Tabs defaultValue="warmup">
-            <TabsList className="w-full">
-              <TabsTrigger value="warmup" className="flex-1">Warm-up</TabsTrigger>
-              <TabsTrigger value="main" className="flex-1">Main</TabsTrigger>
-              <TabsTrigger value="cooldown" className="flex-1">Cool-down</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="warmup" className="space-y-4 mt-4">
-              <WorkoutSection
-                exercises={[]}
-                onExercisesChange={() => {}}
-                onAddClick={() => setDrawerOpen(true)}
-                emptyState
-              />
-            </TabsContent>
-            
-            <TabsContent value="main" className="space-y-4">
-              <WorkoutSection
-                exercises={exercises}
-                onExercisesChange={setExercises}
-                onAddClick={() => setDrawerOpen(true)}
-              />
-            </TabsContent>
-            
-            <TabsContent value="cooldown" className="space-y-4 mt-4">
-              <WorkoutSection
-                exercises={[]}
-                onExercisesChange={() => {}}
-                onAddClick={() => setDrawerOpen(true)}
-                emptyState
-              />
-            </TabsContent>
-          </Tabs>
+          <WorkoutSection
+            exercises={exercises}
+            onExercisesChange={setExercises}
+            onAddClick={() => setDrawerOpen(true)}
+          />
         </CardContent>
         <CardFooter className="flex justify-between">
           <AssignWorkoutDialog 
@@ -211,39 +182,11 @@ const WorkoutBuilder = () => {
             <CardTitle className="text-lg">Workout Plan</CardTitle>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="warmup">
-              <TabsList className="mb-4">
-                <TabsTrigger value="warmup">Warm-up</TabsTrigger>
-                <TabsTrigger value="main">Main Workout</TabsTrigger>
-                <TabsTrigger value="cooldown">Cool-down</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="warmup" className="space-y-4">
-                <WorkoutSection
-                  exercises={[]}
-                  onExercisesChange={() => {}}
-                  onAddClick={() => setDrawerOpen(true)}
-                  emptyState
-                />
-              </TabsContent>
-              
-              <TabsContent value="main" className="space-y-4">
-                <WorkoutSection
-                  exercises={exercises}
-                  onExercisesChange={setExercises}
-                  onAddClick={() => setDrawerOpen(true)}
-                />
-              </TabsContent>
-              
-              <TabsContent value="cooldown" className="space-y-4">
-                <WorkoutSection
-                  exercises={[]}
-                  onExercisesChange={() => {}}
-                  onAddClick={() => setDrawerOpen(true)}
-                  emptyState
-                />
-              </TabsContent>
-            </Tabs>
+            <WorkoutSection
+              exercises={exercises}
+              onExercisesChange={setExercises}
+              onAddClick={() => setDrawerOpen(true)}
+            />
           </CardContent>
           <CardFooter className="flex justify-between">
             <Input 
